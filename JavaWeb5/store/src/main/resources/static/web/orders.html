@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<!--edge浏览器H5兼容设置-->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<!--360浏览器H5兼容设置-->
+		<meta name="renderer" content="webkit" />
+		<title>钢制品商城</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!--导入核心文件-->
+		<script src="../bootstrap3/js/holder.js"></script>
+		<link href="../bootstrap3/css/bootstrap.css" rel="stylesheet" type="text/css">
+		<script src="../bootstrap3/js/bootstrap.js"></script>
+		<script src="../js/menu.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../bootstrap3/js/jquery.cookie.js" type="text/javascript" charset="utf-8"></script>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<!-- 字体图标 -->
+		<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css" />
+		<link rel="stylesheet" type="text/css" href="../css/layout.css" />
+		<link rel="stylesheet" type="text/css" href="../css/top.css" />
+		<link rel="stylesheet" type="text/css" href="../css/footer.css" />
+		<link rel="stylesheet" type="text/css" href="../css/order.css" />
+		<link rel="stylesheet" type="text/css" href="../css/webindex.css" />
+	</head>
+
+	<body>
+
+		<!---------------------------------------------------------------------头部开始------------------------------------------------------------------------>
+		<div id="topTemplate-placeholder"></div>
+		<!---------------------------------------------------------------------头部结束------------------------------------------------------------------------>
+
+		<div class="container">
+			<div class="col-md-2">
+				<!--左侧导航开始--------------------------------------------------------------------------------------------------------------------------->
+				<div id="leftTemplate-placeholder"></div>
+			</div>
+				<!--左侧导航结束------------------------------------------------------------------------------------------------------------------------------>
+
+			<div class="col-md-10">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<p class="panel-title">
+							订单号：1101000001，下单时间：2023-3-1 17:50:30 ，收货人：小雨をさがす
+						</p>
+					</div>
+					<div class="panel-body">
+						<table class="orders-table" width="100%">
+							<thead>
+								<tr>
+									<th width="15%"></th>
+									<th width="30%">商品</th>
+									<th width="8%">单价</th>
+									<th width="8%">数量</th>
+									<th width="9%">小计</th>
+									<th width="10%">售后</th>
+									<th width="10%">状态</th>
+									<th width="10%">操作</th>
+								</tr>
+							</thead>
+							<tbody class="orders-body">
+								<tr>
+									<td><img src="../images/portal/6/collect.png" class="img-responsive" /></td>
+									<td>不锈钢管夹卡子固定夹卡扣管卡燃气管管道支撑架托架管箍水管支架</td>
+									<td>¥<span>26</span></td>
+									<td>1000件</td>
+									<td>¥<span>26000</span></td>
+									<td><a href="#">申请售后</a></td>
+									<td>
+										<div>已发货</div>
+										<div><a href="orderInfo.html">订单详情</a></div>
+									</td>
+									<td><a href="#" class="btn btn-default btn-xs">确认收货</a></td>
+								</tr>
+							</tbody>
+						</table>
+						<div>
+							<span class="pull-right">订单总金额：¥26000</span>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<p class="panel-title">
+						<td>订单号：<span>1101000301</span></td>
+						<td>下单时间：<span>2023-3-2 20:32:17</span></td>
+						<td>收货人：<span>小雨をさがす</span></td>
+						</p>
+					</div>
+					<div class="panel-body">
+						<table class="orders-table" width="100%">
+							<thead>
+								<tr>
+									<th width="15%"></th>
+									<th width="30%">商品</th>
+									<th width="8%">单价</th>
+									<th width="8%">数量</th>
+									<th width="9%">小计</th>
+									<th width="10%">售后</th>
+									<th width="10%">状态</th>
+									<th width="10%">操作</th>
+								</tr>
+							</thead>
+							<tbody  class="orders-body">
+								<tr>
+									<td><img src="../images/portal/StainlessSteelQuickInstallationBlind//collect.png" class="img-responsive" /></td>
+									<td>304不锈钢快装盲板卫生级卡箍式堵头卡盘堵片快开盲盖闷板</td>
+									<td>¥<span>23</span></td>
+									<td>500件</td>
+									<td>¥<span>11500</span></td>
+									<td><a href="#">申请售后</a></td>
+									<td>
+										<div>已发货</div>
+										<div><a href="orderInfo.html">订单详情</a></div>
+									</td>
+									<td><a href="#" class="btn btn-default btn-xs">确认收货</a></td>
+								</tr>
+							</tbody>
+						</table>
+						<div>
+							<span class="pull-right">订单总金额：¥11500</span>
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+			<!---------------------------------------------------------------------页脚开始------------------------------------------------------------------------>
+			<div  id="footerTemplate-placeholder"></div>
+			<!---------------------------------------------------------------------页脚结束------------------------------------------------------------------------>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$("#topTemplate-placeholder").load("topTemplate.html", function() {
+					// 在这里初始化下拉列表
+					$('.dropdown-toggle').dropdown();
+				});
+				$("#footerTemplate-placeholder").load("footerTemplate.html");
+				$("#leftTemplate-placeholder").load("leftTemplate.html");
+				showOrderList();
+
+			});
+			/**展示用户订单**/
+			function showOrderList(){
+				$("#order-list").empty();
+				$.ajax({
+									url: "/orders/",
+									type: "GET",
+									dataType: "JSON",
+									success: function(json) {
+										if(json.status == 200){
+											let list = json.data;
+											for(let i = 0;i<list.length;i++){
+												let tr = '<tr>\n' +
+														'\t\t\t\t\t\t\t\t\t<td>#{oid}</td>\n' +
+														'\t\t\t\t\t\t\t\t\t<td>#{recvName}</td>\n' +
+														'\t\t\t\t\t\t\t\t\t<td>#{recvPhone}</td>\n' +
+														'\t\t\t\t\t\t\t\t\t<td>#{totalPrice}</td>\n' +
+														'\t\t\t\t\t\t\t\t\t<td>#{orderTime}</td>\n' +
+														'\t\t\t\t\t\t\t\t\t<td>#{status}</td>\n' +
+														'\t\t\t\t\t\t\t\t</tr>';
+
+												tr = tr.replace(/#{oid}/g,list[i].oid);
+												tr = tr.replace(/#{recvName}/g,list[i].recvName);
+												tr = tr.replace(/#{recvPhone}/g,list[i].recvPhone);
+												tr = tr.replace(/#{totalPrice}/g,list[i].totalPrice);
+												tr = tr.replaceAll(/#{orderTime}/g,list[i].orderTime);
+												tr = tr.replaceAll(/#{status}/g,list[i].status);
+												$("#order-list").append(tr);
+											}
+										}
+										}
+								});
+			}
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<!--1-->
+	<head>
+		<meta charset="UTF-8">
+		<!--edge浏览器H5兼容设置-->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<!--360浏览器H5兼容设置-->
+		<meta name="renderer" content="webkit" />
+		<title>钢制品商城</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!--导入核心文件-->
+		<script src="../bootstrap3/js/holder.js"></script>
+		<link href="../bootstrap3/css/bootstrap.css" rel="stylesheet" type="text/css">
+		<script src="../bootstrap3/js/bootstrap.js"></script>
+		<script src="../js/menu.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../bootstrap3/js/jquery.cookie.js" type="text/javascript" charset="utf-8"></script>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<!-- 字体图标 -->
+		<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css" />
+		<link rel="stylesheet" type="text/css" href="../css/layout.css" />
+		<link rel="stylesheet" type="text/css" href="../css/webindex.css" />
+		<link rel="stylesheet" type="text/css" href="../css/top.css" />
+		<link rel="stylesheet" type="text/css" href="../css/footer.css" />
+		<script src="../js/adddel.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+		<!---------------------------------------------------------------------头部开始------------------------------------------------------------------------>
+		<div id="topTemplate-placeholder"></div>
+		<!---------------------------------------------------------------------头部结束------------------------------------------------------------------------>
+
+		<!--导航结束-->
+		<div class="container">
+			<div class="col-md-2">
+				<!--左侧导航开始---------------------------------------------------------------------------------------------------------->
+				<div id="leftTemplate-placeholder"></div>
+				<!--左侧导航结束---------------------------------------------------------------------------------------------------------->
+			</div>
+			<div class="col-md-10">
+				<div class="panel panel-default">
+					<ul class="nav nav-tabs">
+						<li><a href="password.html">修改密码</a></li>
+						<li><a href="userdata.html">个人资料</a></li>
+						<li><a href="upload.html">上传头像</a></li>
+						<li class="active"><a href="#">收货管理</a></li>
+					</ul>
+					<div class="panel-body">
+						<!--地址显示-->
+						<table class="table table-striped">
+							<caption>收货地址列表</caption>
+							<thead>
+								<tr>
+									<th>地址类型</th>
+									<th>收货人姓名</th>
+									<th>详细地址</th>
+									<th>联系电话</th>
+									<th colspan="3">操作</th>
+								</tr>
+							</thead>
+							<tbody id="address-list">
+							</tbody>
+						</table>
+						<a href="addAddress.html" class="btn btn-sm btn-primary"><span class="fa fa-plus"></span>新增收货地址</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!---------------------------------------------------------------------页脚开始------------------------------------------------------------------------>
+		<div  id="footerTemplate-placeholder"></div>
+		<!---------------------------------------------------------------------页脚结束------------------------------------------------------------------------>
+		<script type="text/javascript">
+			$(document).ready(function (){
+				showAddressList();
+				$("#topTemplate-placeholder").load("topTemplate.html", function() {
+					// 在这里初始化下拉列表
+					$('.dropdown-toggle').dropdown();
+				});
+				$("#footerTemplate-placeholder").load("footerTemplate.html");
+				$("#leftTemplate-placeholder").load("leftTemplate.html");
+			});
+			//展示用户收货地址数据
+			function showAddressList (){
+				$("#address-list").empty();
+				$.ajax({
+					url: "/addresses/",
+					type: "GET",
+					/*data: "JSON",*/
+					dataType: "JSON",
+					success: function(json) {
+						if(json.state==200){
+							let list = json.data;
+							for (let i = 0 ; i < list.length; i++){
+								let tr = '<tr>\n' +
+										'\t\t\t\t\t\t\t\t\t<td>#{tag}</td>\n' +
+										'\t\t\t\t\t\t\t\t\t<td>#{name}</td>\n' +
+										'\t\t\t\t\t\t\t\t\t<td>#{address}</td>\n' +
+										'\t\t\t\t\t\t\t\t\t<td>#{phone}</td>\n' +
+										'\t\t\t\t\t\t\t\t\t<td><a class="btn btn-xs btn-info"><span class="fa fa-edit"></span> 修改</a></td>\n' +
+										'\t\t\t\t\t\t\t\t\t<td><a onclick="deleteByAid(#{aid})" class="btn btn-xs add-del btn-info"><span class="fa fa-trash-o"></span> 删除</a></td>\n' +
+										'\t\t\t\t\t\t\t\t\t<td><a onclick="setDefault(#{aid})" class="btn btn-xs add-def btn-default">设为默认</a></td>\n' +
+										'\t\t\t\t\t\t\t\t</tr>';
+								//动态替换拼接
+								tr = tr.replace("#{tag}",list[i].tag);
+								tr = tr.replace("#{name}",list[i].name);
+								tr = tr.replace("#{address}",list[i].address);
+								tr = tr.replace("#{phone}",list[i].phone);
+								tr = tr.replaceAll("#{aid}",list[i].aid);
+								$("#address-list").append(tr);
+								//将某个元素隐藏
+								$(".add-def:eq(0)").hide();
+							}
+						}else{
+							alert("用户地址加载失败");
+						}
+					},
+					error:function(xhr){
+						alert("县区信息加载产生未知异常"+xhr.message);
+					}
+				});
+			}
+
+			function deleteByAid(aid){
+				$.ajax({
+					url: "/addresses/"+aid+"/delete",
+					type: "POST",
+					dataType: "JSON",
+					success: function(json) {
+						if (json.state == 200) {
+							showAddressList()
+						} else {
+							alert("删除收货地址失败" + json.message);
+						}
+					},
+					error:function (xhr){
+						alert("删除时产生未知的异常"+xhr.message);
+					}
+				});
+			}
+
+
+
+
+			function setDefault(aid){
+				$.ajax({
+					url: "/addresses/"+aid+"/set_default",
+					type: "POST",
+					dataType: "JSON",
+					success: function(json) {
+						if (json.state == 200) {
+							showAddressList()
+						} else {
+							alert("修改失败！" + json.message);
+						}
+					},
+					error:function (xhr){
+						alert("修改时产生未知的异常"+xhr.message);
+					}
+				});
+			}
+		</script>
+
+	</body>
+
+</html>

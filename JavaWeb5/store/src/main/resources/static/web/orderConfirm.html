@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<!--edge浏览器H5兼容设置-->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<!--360浏览器H5兼容设置-->
+		<meta name="renderer" content="webkit" />
+		<title>钢制品商城</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!--导入核心文件-->
+		<script src="../bootstrap3/js/holder.js"></script>
+		<link href="../bootstrap3/css/bootstrap.css" rel="stylesheet" type="text/css">
+		<script src="../bootstrap3/js/bootstrap.js"></script>
+		<script src="../js/menu.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../bootstrap3/js/jquery.cookie.js" type="text/javascript" charset="utf-8"></script>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<!-- 字体图标 -->
+		<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css" />
+		<link rel="stylesheet" type="text/css" href="../css/layout.css" />
+		<link rel="stylesheet" type="text/css" href="../css/top.css" />
+		<link rel="stylesheet" type="text/css" href="../css/footer.css" />
+		<link rel="stylesheet" type="text/css" href="../css/webindex.css" />
+		<link rel="stylesheet" type="text/css" href="../css/orderConfirm.css" />
+		<link rel="stylesheet" type="text/css" href="../css/cart.css" />
+	</head>
+
+	<body>
+
+		<!---------------------------------------------------------------------头部开始------------------------------------------------------------------------>
+		<div id="topTemplate-placeholder"></div>
+		<!---------------------------------------------------------------------头部结束------------------------------------------------------------------------>
+
+		<div class="container">
+			<div class="col-md-offset-1 col-md-10">
+				<div class="col-md-4">
+					<div class="col-md-12 order-bar-active">
+						1.确认订单信息
+						<span class="pull-right"><span class="fa fa-chevron-right"></span></span>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="col-md-12 order-bar-undo">
+						2.在线支付
+						<span class="pull-right"><span class="fa fa-chevron-right"></span></span>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="col-md-12 order-bar-undo">
+						3.付款成功
+					</div>
+				</div>
+				<div class="col-md-12">
+					<form id="form-create-order" role="form">
+						<div class="form-group">
+							<label for="name">
+								<p>选择收货地址：</p>
+							</label>
+							<select name="aid" id="address-list" class="form-control">
+								<option>QTE&nbsp;&nbsp;家&nbsp;&nbsp;&nbsp;北冀市房山区答辩村3排6号&nbsp;&nbsp;&nbsp;1380***1234</option>
+								<option>QTE&nbsp;&nbsp;&nbsp;公司&nbsp;&nbsp;&nbsp;北冀市海淀区中关村中路1号1001室&nbsp;&nbsp;&nbsp;1380***1234</option>
+								<option>QTE&nbsp;&nbsp;&nbsp;宿舍&nbsp;&nbsp;&nbsp;北冀市海淀区永丰镇30号&nbsp;&nbsp;&nbsp;1380***1234</option>
+							</select>
+						</div>
+						<div class="panel panel-primary">
+							<div class="panel-heading">
+								<p class="panel-title">订单商品信息：</p>
+							</div>
+							<div class="panel-body">
+								<table class="cart-table" width="100%">
+									<thead>
+										<tr>
+											<th width="15%"></th>
+											<th width="35%">商品</th>
+											<th width="15%">单价</th>
+											<th width="15%">数量</th>
+											<th width="20%">金额</th>
+										</tr>
+									</thead>
+									<tbody id="cart-list" class="cart-body">
+										<tr>
+											<td><img src="../images/portal/12DELLXPS13-silvery/collect.png" class="img-responsive" /></td>
+											<td>联想(Lenovo)小新Air13 Pro 13.3英寸14.8mm超轻薄笔记本电脑</td>
+											<td>¥<span>5298</span></td>
+											<td>1</td>
+											<td><span>5298</span></td>
+										</tr>
+									</tbody>
+								</table>
+								<div class="total-bar">
+									&nbsp;
+									<span class="pull-right">已选商品
+										<span id="all-count">1</span>件 总价¥
+										<span id="all-price">5298</span>元
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="pay-bar">
+							<a href="cart.html">返回购物车</a>
+							<span class="pull-right"><input id="btn-create-order" type="button" value="在线支付" class="btn btn-primary btn-lg link-pay"/></span>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<!---------------------------------------------------------------------页脚开始------------------------------------------------------------------------>
+		<div  id="footerTemplate-placeholder"></div>
+		<!---------------------------------------------------------------------页脚结束------------------------------------------------------------------------>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				showCartList();
+				showAddressList();
+				$("#topTemplate-placeholder").load("topTemplate.html", function() {
+					// 在这里初始化下拉列表
+					$('.dropdown-toggle').dropdown();
+				});
+				$("#footerTemplate-placeholder").load("footerTemplate.html");
+				/*let avatar= $.cookie("avatar");
+				$("#img-avatar").attr("src",avatar);*/
+			});
+
+			function showAddressList() {
+				$("#address-list").empty();
+				$.ajax({
+					url: "/addresses",
+					type: "GET",
+					dataType: "JSON",
+					success: function(json) {
+						if(json.state==200){
+						let list = json.data;
+						console.log("count=" + list.length);
+						for (let i = 0; i < list.length; i++) {
+							console.log(list[i].name);
+							let opt = '<option value="#{aid}">#{name} | #{tag} | #{province}#{city}#{area}#{address} | #{phone}</option>';
+
+							opt = opt.replace(/#{aid}/g, list[i].aid);
+							opt = opt.replace(/#{tag}/g, list[i].tag);
+							opt = opt.replace("#{name}", list[i].name);
+							opt = opt.replace("#{province}", list[i].provinceName);
+							opt = opt.replace("#{city}", list[i].cityName);
+							opt = opt.replace("#{area}", list[i].areaName);
+							opt = opt.replace("#{address}", list[i].address);
+							opt = opt.replace("#{phone}", list[i].phone);
+
+							$("#address-list").append(opt);
+						}
+					}
+					}
+				});
+			}
+			function showCartList() {
+				$("#cart-list").empty();
+				$.ajax({
+					url: "/carts/list",
+					type: "GET",
+					data: location.search.slice(1),
+					dataType: "JSON",
+					success: function(json) {
+
+							let list = json.data;
+							let allCount = 0;
+							let allPrice = 0;
+							for (let i = 0; i < list.length; i++) {
+								let tr = '<tr>\n'
+										+ '<td><img src="..#{image}collect.png" class="img-responsive" /></td>\n'
+										+ '<td>#{title}</td>\n'
+										+ '<td>¥<span>#{realPrice}</span></td>\n'
+										+ '<td>#{num}</td>\n'
+										+ '<td>¥<span>#{totalPrice}</span></td>\n'
+										+ '</tr>';
+
+								tr = tr.replace(/#{image}/g, list[i].image);
+								tr = tr.replace(/#{title}/g, list[i].title);
+								tr = tr.replace(/#{realPrice}/g, list[i].realPrice);
+								tr = tr.replace(/#{num}/g, list[i].num);
+								tr = tr.replace(/#{totalPrice}/g, list[i].realPrice * list[i].num);
+
+								$("#cart-list").append(tr);
+								allCount += list[i].num;
+								allPrice += list[i].realPrice * list[i].num;
+						}
+							$("#all-count").html(allCount);
+							$("#all-price").html(allPrice);
+
+					},
+					error:function(xhr){
+						alert("购物车加载产生未知异常"+xhr.status);
+					}
+				});
+			}
+
+
+
+			$("#btn-create-order").click(function() {
+				let aid = $("#address-list").val();
+				let cids = location.search.slice(1);
+				$.ajax({
+					url: "/orders/create",
+					data: "aid="+aid+"&"+cids,
+					type: "GET",
+					dataType: "JSON",
+					success: function(json) {
+						if (json.state == 200) {
+							location.href = "payment.html";
+							alert("创建订单成功！");
+							console.log(json.data);
+						} else {
+							alert("创建订单失败！" + json.message);
+						}
+					},
+					error: function(xhr) {
+						alert("您的登录信息已经过期，请重新登录！HTTP响应码：" + xhr.status);
+						location.href = "login.html";
+					}
+				});
+			});
+		</script>
+
+		<!--页脚结束-->
+	</body>
+
+</html>

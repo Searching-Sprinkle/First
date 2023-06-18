@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<!--edge浏览器H5兼容设置-->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<!--360浏览器H5兼容设置-->
+		<meta name="renderer" content="webkit" />
+		<title>钢制品商城</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!--导入核心文件-->
+		<script src="../bootstrap3/js/holder.js"></script>
+		<link href="../bootstrap3/css/bootstrap.css" rel="stylesheet" type="text/css">
+		<script src="../bootstrap3/js/bootstrap.js"></script>
+		<script src="../js/menu.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../bootstrap3/js/jquery.cookie.js" type="text/javascript" charset="utf-8"></script>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<!-- 字体图标 -->
+		<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css" />
+		<link rel="stylesheet" type="text/css" href="../css/layout.css" />
+		<link rel="stylesheet" type="text/css" href="../css/webindex.css" />
+		<link rel="stylesheet" type="text/css" href="../css/top.css" />
+		<link rel="stylesheet" type="text/css" href="../css/footer.css" />
+		<link rel="stylesheet" type="text/css" href="../css/cart.css" />
+	</head>
+
+	<body>
+
+		<!---------------------------------------------------------------------头部开始------------------------------------------------------------------------>
+		<div id="topTemplate-placeholder"></div>
+		<!---------------------------------------------------------------------头部结束------------------------------------------------------------------------>
+
+		<div class="container">
+			<div class="col-md-offset-1 col-md-10">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<p class="panel-title"><span class="fa fa-shopping-cart"></span> 购物车</p>
+					</div>
+					<div class="panel-body">
+						<form action="orderConfirm.html" role="form">
+							<!--购物车表格开始-->
+							<table class="cart-table" width="100%">
+								<thead>
+									<tr>
+										<th width="8%">
+											<input type="checkbox" class="ckall" onclick="checkall(this)" />全选</th>
+										<th width="110"></th>
+										<th width="29%">商品</th>
+										<th width="11%">单价</th>
+										<th width="15%">数量</th>
+										<th width="11%">金额</th>
+										<th>操作</th>
+									</tr>
+								</thead>
+								<tbody id="cart-list" class="cart-body">
+									<tr>
+										<td>
+											<input type="checkbox" class="ckitem" />
+										</td>
+										<td><img src="../images/portal/12DELLXPS13-silvery/collect.png" class="img-responsive" /></td>
+										<td>联想(Lenovo)小新Air13 Pro 13.3英寸14.8mm超轻薄笔记本电脑</td>
+										<td>¥<span id="goodsPrice1">5298</span></td>
+										<td>
+											<input type="button" value="-" class="num-btn" onclick="reduceNum(1)" />
+											<input id="goodsCount1" type="text" size="2" readonly="readonly" class="num-text" value="1">
+											<input class="num-btn" type="button" value="+" onclick="addNum(1)" />
+										</td>
+										<td><span id="goodsCast1"></span></td>
+										<td>
+											<input type="button" onclick="delCartItem(this)" class="cart-del btn btn-default btn-xs" value="删除" />
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<input type="checkbox" class="ckitem" />
+										</td>
+										<td><img src="../images/portal/16LenovoYOGA900green/collect.png" class="img-responsive" /></td>
+										<td>戴尔(DELL)XPS13-9360-R1609 13.3</td>
+										<td>¥<span id="goodsPrice2">4988</span></td>
+										<td>
+											<input type="button" value="-" class="num-btn" onclick="reduceNum(2)" />
+											<input id="goodsCount2" type="text" size="2" readonly="readonly" class="num-text" value="1">
+											<input class="num-btn" type="button" value="+" onclick="addNum(2)" />
+										</td>
+										<td><span id="goodsCast2"></span></td>
+										<td>
+											<input type="button" onclick="delCartItem(this)" class="cart-del btn btn-default btn-xs" value="删除" />
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<input type="checkbox" class="ckitem" />
+										</td>
+										<td><img src="../images/portal/13LenovoIdeaPad310_silvery/collect.png" class="img-responsive" /></td>
+										<td>戴尔(DELL)魔方15MF Pro-R2505TSS灵越</td>
+										<td>¥<span id="goodsPrice3">4699</span></td>
+										<td>
+											<input type="button" value="-" class="num-btn" onclick="reduceNum(3)" />
+											<input id="goodsCount3" type="text" size="2" readonly="readonly" class="num-text" value="1">
+											<input class="num-btn" type="button" value="+" onclick="addNum(3)" />
+										</td>
+										<td><span id="goodsCast3"></span></td>
+										<td>
+											<input type="button" onclick="delCartItem(this)" class="cart-del btn btn-default btn-xs" value="删除" />
+										</td>
+									</tr>
+								</tbody>
+							</table>
+					<!--		<div class="total-bar">
+								<a href="javascript:selDelCart()" class="cart-del-sel btn btn-default btn-xs">删除所选商品</a>
+								<span class="pull-right">已选商品
+								<span id="selectCount">0</span>件 总价¥
+								<span id="selectTotal">0</span>元
+								</span>
+							</div>-->
+							<div>
+								<span class="pull-right">
+								<input type="submit" value="  结  算  " class="btn btn-primary btn-lg link-account" />
+							</span>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!---------------------------------------------------------------------页脚开始------------------------------------------------------------------------>
+		<div  id="footerTemplate-placeholder"></div>
+		<!---------------------------------------------------------------------页脚结束------------------------------------------------------------------------>
+		<script type="text/javascript">
+			$(document).ready(function (){
+				showCartList();
+				$("#topTemplate-placeholder").load("topTemplate.html", function() {
+					// 在这里初始化下拉列表
+					$('.dropdown-toggle').dropdown();
+				});
+				$("#footerTemplate-placeholder").load("footerTemplate.html");
+				/*let avatar= $.cookie("avatar");
+				$("#img-avatar").attr("src",avatar);*/
+			});
+			function showCartList(){
+				$("#cart-list").empty();
+				$.ajax({
+									url: "/carts/",
+									type: "GET",
+									dataType: "JSON",
+									success: function(json) {
+										let list = json.data;
+										for(let i = 0;i < list.length;i++){
+											let tr = '<tr>\n' +
+													'<td>\n' +
+													'<input name="cids" value="#{cid}" type="checkbox" class="ckitem" />\n' +
+													'</td>\n' +
+													'<td><img src="..#{image}collect.png" class="img-responsive" /></td>\n' +
+													'<td>#{title}#{msg}</td>\n' +
+													'<td>¥<span id="goodsPrice#{cid}">#{singlePrice}</span></td>\n' +
+													'<td>\n' +
+													'<input id="price-#{cid}" type="button" value="-" class="num-btn" onclick="reduceNum(#{cid})" />\n' +
+													'<input id="goodsCount#{cid}" type="text" size="2" readonly="readonly" class="num-text" value="#{num}">\n' +
+													'<input id="price+#{cid}" type="button" value="+" class="num-btn" onclick="addNum(#{cid})" />\n' +
+													'</td>\n' +
+													'<td><span id="goodsCast#{cid}">#{totalPrice}</span></td>\n' +
+													'<td>\n' +
+													'<input type="button" onclick="deleteBycid(#{cid})" class="cart-del btn btn-default btn-xs" value="删除" />\n' +
+													'</td>\n' +
+													'</tr>';
+
+											tr = tr.replace(/#{cid}/g, list[i].cid);
+											tr = tr.replace(/#{image}/g, list[i].image);
+											tr = tr.replace(/#{title}/g, list[i].title);
+											tr = tr.replace(/#{msg}/g, list[i].realPrice);
+											tr = tr.replace(/#{num}/g, list[i].num);
+											tr = tr.replace(/#{singlePrice}/g, list[i].realPrice);
+											tr = tr.replace(/#{totalPrice}/g, list[i].realPrice * list[i].num);
+											$("#cart-list").append(tr);
+											}
+										},
+										error:function (xhr){
+										alert("购物车列表数据加载产生异常"+xhr.status)
+											}
+								});
+						}
+
+
+
+			function addNum(cid) {
+				$.ajax({
+					url: "/carts/" + cid + "/num/add",
+					type: "POST",
+					dataType: "JSON",
+					success: function(json) {
+						if (json.state == 200) {
+							// showCartList();
+							$("#goodsCount" + cid).val(json.data);
+							let price = $("#goodsPrice" + cid).html();
+							let totalPrice = price * json.data;
+							$("#goodsCast" + cid).html(totalPrice);
+						} else {
+							alert("增加商品数量失败！" + json.message);
+						}
+					},
+					error: function(xhr) {
+						alert("购物车数据产生未知异常" + xhr.status);
+						/*location.href = "login.html";*/
+					}
+				});
+			}
+			function reduceNum(cid) {
+				$.ajax({
+					url: "/carts/" + cid + "/num/reduce",
+					type: "POST",
+					dataType: "JSON",
+					success: function(json) {
+						if (json.state == 200) {
+							// showCartList();
+							$("#goodsCount" + cid).val(json.data);
+							let price = $("#goodsPrice" + cid).html();
+							let totalPrice = price * json.data;
+							$("#goodsCast" + cid).html(totalPrice);
+						} else {
+							alert("增加商品数量失败！" + json.message);
+						}
+					},
+					error: function(xhr) {
+						alert("购物车数据产生未知异常" + xhr.status);
+					}
+				});
+			}
+
+			function deleteBycid(cid){
+				$.ajax({
+					url: "/carts/"+cid+"/delete",
+					type: "POST",
+					dataType: "JSON",
+					success: function(json) {
+						if (json.state == 200) {
+							showCartList();
+						} else {
+							alert("删除购物车失败" + json.message);
+						}
+					},
+					error:function (xhr){
+						alert("删除时产生未知的异常"+xhr.message);
+					}
+				});
+			}
+		</script>
+	</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<!--edge浏览器H5兼容设置-->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<!--360浏览器H5兼容设置-->
+		<meta name="renderer" content="webkit" />
+		<title>钢制品商城</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!--导入核心文件-->
+		<script src="../bootstrap3/js/holder.js"></script>
+		<link href="../bootstrap3/css/bootstrap.css" rel="stylesheet" type="text/css">
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script src="../bootstrap3/js/bootstrap.js"></script>
+		<script src="../bootstrap3/js/jquery.cookie.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/menu.js" type="text/javascript" charset="utf-8"></script>
+		<!-- 字体图标 -->
+		<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css" />
+		<link rel="stylesheet" type="text/css" href="../css/layout.css" />
+		<link rel="stylesheet" type="text/css" href="../css/webindex.css" />
+		<link rel="stylesheet" type="text/css" href="../css/top.css" />
+		<link rel="stylesheet" type="text/css" href="../css/footer.css" />
+	</head>
+
+	<body>
+
+		<!---------------------------------------------------------------------头部开始------------------------------------------------------------------------>
+		<div id="topTemplate-placeholder"></div>
+		<!---------------------------------------------------------------------头部结束------------------------------------------------------------------------>
+
+		<!--导航结束-->
+		<div class="text-center">
+			<img src="../images/index/500_img1.png" />
+			<img src="../images/index/500_img2.png" />
+		</div>
+		<div class="text-center">
+			服务器出错了！
+			<br />
+			<a href="index.html">回首页>></a>
+		</div>
+
+		<!---------------------------------------------------------------------页脚开始------------------------------------------------------------------------>
+		<div  id="footerTemplate-placeholder"></div>
+		<!---------------------------------------------------------------------页脚结束------------------------------------------------------------------------>
+
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$("#topTemplate-placeholder").load("topTemplate.html", function() {
+					// 在这里初始化下拉列表
+					$('.dropdown-toggle').dropdown();
+				});
+				$("#footerTemplate-placeholder").load("footerTemplate.html");
+			});
+		</script>
+
+	</body>
+</html>

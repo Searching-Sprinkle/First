@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<!--edge浏览器H5兼容设置-->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<!--360浏览器H5兼容设置-->
+		<meta name="renderer" content="webkit" />
+		<title>钢制品商城</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!--导入核心文件-->
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script src="../bootstrap3/js/jquery.cookie.js" type="text/javascript" charset="utf-8"></script>
+		<link href="../bootstrap3/css/bootstrap.css" rel="stylesheet" type="text/css">
+		<script src="../bootstrap3/js/holder.js"></script>
+		<script src="../js/menu.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../bootstrap3/js/bootstrap.js"></script>
+		<!-- 字体图标 -->
+		<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css" />
+		<link rel="stylesheet" type="text/css" href="../css/layout.css" />
+		<link rel="stylesheet" type="text/css" href="../css/webindex.css" />
+		<link rel="stylesheet" type="text/css" href="../css/footer.css" />
+		<link rel="stylesheet" type="text/css" href="../css/top.css" />
+	</head>
+
+	<body >
+
+		<!---------------------------------------------------------------------头部开始------------------------------------------------------------------------>
+		<div id="topTemplate-placeholder"></div>
+		<!---------------------------------------------------------------------头部结束------------------------------------------------------------------------>
+
+		<!--导航结束-->
+		<div class="container">
+			<div class="row">
+				<div class="col-md-2" id="indexMenu">
+					<ul class="index-menu">
+					</ul>
+					<div id="showIndex">
+						<ul class="second-menu">
+							<li class="second-menu-li">####</li>
+						</ul>
+					</div>
+					<div id="showSecond">
+						<ul class="third-menu">
+						</ul>
+					</div>
+				</div>
+				<div class="col-md-10">
+					<div id="myCarousel" class="carousel slide">
+						<!-- 轮播（Carousel）指标 -->
+						<ol class="carousel-indicators">
+							<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+							<li data-target="#myCarousel" data-slide-to="1"></li>
+							<li data-target="#myCarousel" data-slide-to="2"></li>
+							<li data-target="#myCarousel" data-slide-to="3"></li>
+							<li data-target="#myCarousel" data-slide-to="4"></li>
+						</ol>
+						<!-- 轮播（Carousel）项目 -->
+						<div class="carousel-inner" align="center">
+							<div class="item active">
+								<img src="../images/index/index_banner1.png">
+							</div>
+							<div class="item">
+								<img src="../images/index/index_banner2.png">
+							</div>
+							<div class="item">
+								<img src="../images/index/index_banner3.png">
+							</div>
+							<div class="item">
+								<img src="../images/index/index_banner4.png">
+							</div>
+							<div class="item">
+								<img src="../images/index/index_banner5.png">
+							</div>
+						</div>
+						<!-- 轮播（Carousel）导航 -->
+						<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+							<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+							<span class="sr-only">Previous</span>
+						</a>
+						<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+							<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+							<span class="sr-only">Next</span>
+						</a>
+					</div>
+				</div>
+			</div>
+
+			<!--推荐栏目-->
+			<div class="row">
+				<div class="col-md-6">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<p class="panel-title">新到好货</p>
+						</div>
+						<div id="new-list" class="panel-body panel-item">
+					<!--*********************************-->
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<p class="panel-title">热销排行</p>
+						</div>
+						<div id="hot-list" class="panel-body panel-item">
+							<!--********************************-->
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-12" >
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<p  class="panel-title" style="text-align: center">商品展示</p>
+						</div>
+						<div id="all-list" class="panel-body panel-item">
+							<!--********************************-->
+
+		</div>
+
+		</div>
+		</div>
+
+
+		</div>
+
+		</div>
+
+		</div>
+		</div>
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+		</div>
+		</div>
+		<!---------------------------------------------------------------------页脚开始------------------------------------------------------------------------>
+		<div  id="footerTemplate-placeholder"></div>
+		<!---------------------------------------------------------------------页脚结束------------------------------------------------------------------------>
+
+		<script type="text/javascript">
+
+			$(document).ready(function() {
+				showHotList();
+				showNewList();
+				showAllList();
+				$("#topTemplate-placeholder").load("topTemplate.html", function() {
+					// 在这里初始化下拉列表
+					$('.dropdown-toggle').dropdown();
+				});
+				$("#footerTemplate-placeholder").load("footerTemplate.html");
+			});
+
+
+			function showHotList() {
+				$("#hot-list").empty();
+				$.ajax({
+					url: "/products/hot_list",
+					type: "GET",
+					dataType: "JSON",
+					success: function(json) {
+						let list = json.data;
+						console.log("count=" + list.length);
+						for (let i = 0; i < list.length; i++) {
+							console.log(list[i].title);
+							let html = '<div class="col-md-12">'
+									+ '<div class="col-md-7 text-row-2"><a href="product.html?id=#{id}">#{title}</a></div>'
+									+ '<div class="col-md-2">¥#{price}</div>'
+									+ '<div class="col-md-3"><img src="..#{image}collect.png" class="img-responsive" /></div>'
+									+ '</div>';
+
+							html = html.replace("#{id}", list[i].id);
+							html = html.replace("#{title}", list[i].title);
+							html = html.replace("#{price}", list[i].price);
+							html = html.replace("#{image}", list[i].image);
+
+							$("#hot-list").append(html);
+						}
+					}
+				});
+			}
+
+			function showNewList() {
+				$("#new-list").empty();
+				$.ajax({
+					url: "/products/new_list",
+					type: "GET",
+					dataType: "JSON",
+					success: function(json) {
+						let list = json.data;
+						console.log("count=" + list.length);
+						for (let i = 0; i < list.length; i++) {
+							console.log(list[i].title);
+							let html = '<div class="col-md-12">'
+									+ '<div class="col-md-7 text-row-2"><a href="product.html?id=#{id}">#{title}</a></div>'
+									+ '<div class="col-md-2">¥#{price}</div>'
+									+ '<div class="col-md-3"><img src="..#{image}collect.png" class="img-responsive" /></div>'
+									+ '</div>';
+
+							html = html.replace("#{id}", list[i].id);
+							html = html.replace("#{title}", list[i].title);
+							html = html.replace("#{price}", list[i].price);
+							html = html.replace("#{image}", list[i].image);
+
+							$("#new-list").append(html);
+						}
+					}
+				});
+			}
+
+
+			function showAllList() {
+				$("#all-list").empty();
+				$.ajax({
+					url: "/products/all_list",
+					type: "GET",
+					dataType: "JSON",
+					success: function(json) {
+						let list = json.data;
+						console.log("count=" + list.length);
+						for (let i = 0; i < list.length; i++) {
+							console.log(list[i].title);
+							let html = '<div class="col-md-3">'
+									+ '<div class="col-md-12" ><img src="..#{image}collect.png" class="img-responsive" /></div>'
+									+ '<div class="col-md-12">单价：¥#{price} </div>'
+									+ '<div class="col-md-12 text-row-2" style="top: 0px"><a href="product.html?id=#{id}">#{title}</a></div>'
+									+ '</div>';
+
+							html = html.replace("#{id}", list[i].id);
+							html = html.replace("#{title}", list[i].title);
+							html = html.replace("#{price}", list[i].price);
+							html = html.replace("#{image}", list[i].image);
+
+							$("#all-list").append(html);
+						}
+					}
+				});
+			}
+
+
+		</script>
+
+
+		<style typeof="text/css">
+			.king{
+				width: 50px;
+				height: 50px;
+				float: right;
+			}
+			.price{
+				display: block;
+				margin:auto;
+				background: coral;
+			}
+
+		</style>
+		<!--页脚结束-->
+	</body>
+
+</html>

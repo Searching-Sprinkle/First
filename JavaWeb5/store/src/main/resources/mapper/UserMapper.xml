@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace属性：用于指定当前映射文件和哪个接口进行映射，需要指定接口文件路径，需要标注包的完整路径接口-->
+<!--将表中的资源和类的属性不一致的字段进行匹配指定，名称一致的字段可以不写-->
+<!--
+    column：表示表中的资源名称
+    property：表示类中的属性名称
+    这俩配合完成名称不一致的映射
+-->
+<!--定义映射规则时，主键定义不可省略，无论是否一致-->
+<mapper namespace="com.cy.store.mapper.UserMapper">
+    <resultMap id="UserEntityMap" type="com.cy.store.entity.User">
+        <id column="uid" property="uid"/>
+        <result column="is_delete" property="isDelete"/>
+        <result column="created_user" property="createdUser"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="modified_user" property="modifiedUser"/>
+        <result column="modified_time" property="modifiedTime"/>
+    </resultMap>
+    <!--用resultMap标签来完成自定义映射规则-->
+    <!--
+         id:标签给映射分配一个唯一的id值，对应的就是resultMap=“id属性的的值”属性的取值
+         type：取值是一个类，表示的是数据库中的查询结构与JAVA中哪个实体类进行结果集的映射
+    -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="uid">
+        INSERT INTO
+        t_user (username, password, salt, phone, email, gender, avatar, is_delete, created_user, created_time, modified_user, modified_time)
+        VALUES
+        (#{username}, #{password}, #{salt}, #{phone}, #{email}, #{gender}, #{avatar}, #{isDelete}, #{createdUser}, #{createdTime}, #{modifiedUser}, #{modifiedTime})
+    </insert>
+    <!--id属性：表示映射接口中方法的名称，直接在标签的内容部分来编写SQL语句-->
+    <!--
+        userGeneratedKeys属性：开启某个字段值的递增，通常开逐渐递增
+        keyProperty属性：标签将表中的某个字段作为主键进行递增
+    -->
+    <select id="findByUsername" resultMap="UserEntityMap">
+        SELECT * FROM t_user WHERE username = #{username}
+    </select>
+
+    <update id="updatePasswordByUid">
+        UPDATE
+            t_user
+        SET
+            password=#{password},
+            modified_user=#{modifiedUser},
+            modified_time=#{modifiedTime}
+        WHERE
+            uid=${uid}
+    </update>
+
+    <select id="findByUid" resultMap="UserEntityMap">
+        SELECT * FROM t_user WHERE uid=#{uid}
+    </select>
+
+    <update id="updateInfoByUid">
+        UPDATE
+            t_user
+        SET
+        <if test="phone!=null"> phone = #{phone},</if>
+        <if test="email!=null"> email = #{email},</if>
+        <if test="gender!=null"> gender = #{gender},</if>
+            modified_user = #{modifiedUser},
+            modified_time = #{modifiedTime}
+        WHERE
+            uid=${uid}
+    </update>
+
+    <update id="updateAvatarByUid">
+        UPDATE
+            t_user
+        SET
+            avatar = #{avatar},
+            modified_user = #{modifiedUser},
+            modified_time = #{modifiedTime}
+        WHERE
+            uid=#{uid}
+    </update>
+
+</mapper>
